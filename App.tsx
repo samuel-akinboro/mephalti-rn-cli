@@ -13,6 +13,8 @@ import SearchTab from './src/screens/SearchTab';
 import { useMovieStore } from './src/store/movieStore';
 import { darkTheme, lightTheme } from './src/constants/Theme';
 import { Ionicons } from '@react-native-vector-icons/ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import OnboardingScreen from './src/screens/OnboardingScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -26,14 +28,21 @@ function HomeScreen() {
 
 const Stack = createNativeStackNavigator();
 
-function RootStack() {
+function RootStack({ hasSeenOnboarding }: { hasSeenOnboarding: null | boolean }) {
+  // Determine the initial route based on onboarding status
+  const initialRoute = hasSeenOnboarding ? 'tabs' : 'onboarding';
+
   return (
-    <Stack.Navigator 
-      initialRouteName='tabs'
+    <Stack.Navigator
+      initialRouteName={initialRoute}
       screenOptions={{
-        headerShown: false
+        headerShown: false,
       }}
     >
+      <Stack.Screen
+        name="onboarding"
+        component={OnboardingScreen}
+      />
       <Stack.Screen name="tabs" component={TabNav} />
       <Stack.Screen name="see-all" component={SeeAllScreen} />
       <Stack.Screen name="movie-details" component={MovieDetailsScreen} />
@@ -90,10 +99,28 @@ export default function App() {
   const colorScheme = useColorScheme();
   const [hasSeenOnboarding, setHasSeenOnboarding] = React.useState<boolean | null>(null);
 
+  React.useEffect(() => {
+    checkOnboardingStatus();
+  }, []);
+
+  const checkOnboardingStatus = async () => {
+    try {
+      const value = await AsyncStorage.getItem('hasSeenOnboarding');
+      setHasSeenOnboarding(value === 'true');
+    } catch (error) {
+      setHasSeenOnboarding(false);
+    }
+  };
+
+  if (hasSeenOnboarding === null) {
+    return null; // Still loading
+  }
+
+
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <NavigationContainer>
-        <RootStack />
+        <RootStack hasSeenOnboarding={hasSeenOnboarding} />
       </NavigationContainer>
     </ThemeProvider>
   );
