@@ -11,10 +11,10 @@ This application demonstrates proficiency in React Native CLI development, showc
 ## 📱 App Preview
 
 <div align="center">
-  <img src="./assets/images/preview-1.png" width="200" alt="Preview 1" />
-  <img src="./assets/images/preview-2.png" width="200" alt="Preview 2" />
-  <img src="./assets/images/preview-3.png" width="200" alt="Preview 3" />
-  <img src="./assets/images/preview-4.png" width="200" alt="Preview 4" />
+  <img src="./src/assets/images/preview-1.png" width="200" alt="Preview 1" />
+  <img src="./src/assets/images/preview-2.png" width="200" alt="Preview 2" />
+  <img src="./src/assets/images/preview-3.png" width="200" alt="Preview 3" />
+  <img src="./src/assets/images/preview-4.png" width="200" alt="Preview 4" />
 </div>
 
 ---
